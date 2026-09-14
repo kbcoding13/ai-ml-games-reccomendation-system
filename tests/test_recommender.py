@@ -12,3 +12,12 @@ def test_search_finds_known_game():
     results = reccomender.search("hades")
     assert any(game.name == "Hades" for game in results)
 
+
+def test_search_empty_query_returns_empty_list():
+    reccomender = Recommender(settings.games_path, settings.neighbors_path)
+    assert reccomender.search("") == []
+
+def test_get_game_returns_none_for_unknown_id():
+    reccomender = Recommender(settings.games_path, settings.neighbors_path)
+    results = reccomender.search("hades")
+    assert any(game.name == "Hades" for game in results)

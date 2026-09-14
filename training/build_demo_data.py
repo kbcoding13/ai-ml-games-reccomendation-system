@@ -13,8 +13,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-PROCESSED_DIR = Path(__file__).resolve().parent.parent / "data" / "processed"
-MODELS_DIR = Path(__file__).resolve().parent.parent / "data" / "models"
+DEMO_DIR = Path(__file__).resolve().parent.parent / "data" / "demo"
 
 DEMO_GAMES = [
     (1, "Stardew Valley", "Indie;RPG;Simulation", "Farming Sim;Relaxing;Singleplayer", 95, 2),
@@ -43,15 +42,14 @@ TOP_K = 8
 
 
 def main() -> None:
-    PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
-    MODELS_DIR.mkdir(parents=True, exist_ok=True)
+    DEMO_DIR.mkdir(parents=True, exist_ok=True)
 
     df = pd.DataFrame(
         DEMO_GAMES,
         columns=["game_id", "name", "genres", "steamspy_tags", "positive_ratings", "negative_ratings"],
     )
     df["categories"] = ""
-    df.to_parquet(PROCESSED_DIR / "games.parquet", index=False)
+    df.to_parquet(DEMO_DIR / "games.parquet", index=False)
 
     tag_text = (df["genres"] + " " + df["steamspy_tags"]).str.replace(";", " ", regex=False)
     tfidf = TfidfVectorizer()
@@ -80,11 +78,11 @@ def main() -> None:
                 break
         hybrid[str(int(game_id))] = neighbors
 
-    with open(MODELS_DIR / "hybrid_neighbors.json", "w") as f:
+    with open(DEMO_DIR / "hybrid_neighbors.json", "w") as f:
         json.dump(hybrid, f)
 
-    print(f"Wrote demo dataset: {len(df)} games -> {PROCESSED_DIR / 'games.parquet'}")
-    print(f"Wrote demo neighbors -> {MODELS_DIR / 'hybrid_neighbors.json'}")
+    print(f"Wrote demo dataset: {len(df)} games -> {DEMO_DIR / 'games.parquet'}")
+    print(f"Wrote demo neighbors -> {DEMO_DIR / 'hybrid_neighbors.json'}")
 
 
 if __name__ == "__main__":

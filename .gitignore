@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+data/raw/
+data/processed/
+data/models/
+# demo/ is small and hand-curated - it IS committed so the app runs out of the box
+.DS_Store

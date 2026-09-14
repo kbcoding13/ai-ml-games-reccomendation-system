@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Game Recommendation System</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <main>
+    <h1>Find your next game</h1>
+    <p class="subtitle">Hybrid recommender: content similarity + "players who liked this also played"</p>
+
+    <input id="search-box" type="text" placeholder="Search a game you like (e.g. Hades)" autocomplete="off" />
+    <ul id="search-results" class="results-list"></ul>
+
+    <section id="recommendations-section" hidden>
+      <h2 id="selected-game-title"></h2>
+      <div id="recommendations-grid" class="grid"></div>
+    </section>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>

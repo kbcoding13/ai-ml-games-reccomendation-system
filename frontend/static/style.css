@@ -1,0 +1,71 @@
+:root {
+  color-scheme: light dark;
+  --bg: #0f1115;
+  --card: #1a1d24;
+  --text: #eaeaea;
+  --muted: #9aa0aa;
+  --accent: #5b8def;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 16px 64px;
+}
+
+h1 { margin-bottom: 4px; }
+.subtitle { color: var(--muted); margin-top: 0; }
+
+#search-box {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background: var(--card);
+  color: var(--text);
+}
+
+.results-list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.results-list li {
+  padding: 10px 14px;
+  background: var(--card);
+  cursor: pointer;
+  border-bottom: 1px solid #262a33;
+}
+
+.results-list li:hover { background: #232733; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.card h3 { margin: 0 0 6px; font-size: 16px; }
+.card .score { color: var(--accent); font-size: 13px; }
+.card .reasons { color: var(--muted); font-size: 12px; margin-top: 6px; }
+.card .genres { margin-top: 8px; font-size: 12px; color: var(--muted); }

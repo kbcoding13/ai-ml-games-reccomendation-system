@@ -1,5 +1,5 @@
 -r requirements.txt
-scikit-learn==1.5.2
+scikit-learn>=1.5.2
 implicit==0.7.2
 kagglehub==0.3.3
 tqdm==4.66.5

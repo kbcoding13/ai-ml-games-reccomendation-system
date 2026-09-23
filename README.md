@@ -1,14 +1,12 @@
 # Game Recommendation System
 
-A hybrid game recommender: pick a game you like, get similar ones back with a
-plain-English reason for each suggestion.
+A hybrid game reccomendation system for my AI/ML project application for ZEIL AI Hackathon.
 
-Inspired by [inboxpraveen/Movie-Recommendation-System](https://github.com/inboxpraveen/Movie-Recommendation-System)
-(content-based movie recommendations via TF-IDF + SVD, precomputed neighbor
-lists for scale). This project reimplements the idea from scratch for a
-different domain (video games instead of movies) with its own stack and adds
-a **hybrid** scoring model plus per-recommendation explanations, which the
-original does not have.
+Inspired by the repo [inboxpraveen/Movie-Recommendation-System](https://github.com/inboxpraveen/Movie-Recommendation-System):
+Reccomends movies using TF-IDF + SV and neighbour lists for scale
+
+This project aims to reimplement the idea with a twist of a different domain, hence games, with its own stack of my choosing and introducing a hybrid scoring model, which is what the original lacks.
+
 
 ## How it works
 

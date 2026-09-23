@@ -7,6 +7,7 @@ Reccomends movies using TF-IDF + SV and neighbour lists for scale
 
 This project aims to reimplement the idea with a twist of a different domain, hence games, with its own stack of my choosing and introducing a hybrid scoring model, which is what the original lacks.
 
+**Live demo:** https://ml-games-reccomendation-system.onrender.com/
 
 ## How it works
 

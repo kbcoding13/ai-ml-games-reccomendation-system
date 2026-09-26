@@ -69,3 +69,9 @@ h1 { margin-bottom: 4px; }
 .card .score { color: var(--accent); font-size: 13px; }
 .card .reasons { color: var(--muted); font-size: 12px; margin-top: 6px; }
 .card .genres { margin-top: 8px; font-size: 12px; color: var(--muted); }
+
+.status {
+  color: var(--muted);
+  padding: 10px 14px;
+  font-size: 14px;
+}

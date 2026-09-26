@@ -1,4 +1,3 @@
-import json
 from functools import lru_cache
 
 import pandas as pd
@@ -21,11 +20,8 @@ class Recommender:
             (game.name.lower(), game) for game in self._games_by_id.values()
         ]
 
-        with open(neighbors_path) as f:
-            raw_neighbors = json.load(f)
-        self._neighbors: dict[int, list[dict]] = {
-            int(game_id): neighbors for game_id, neighbors in raw_neighbors.items()
-        }
+        neighbors_df = pd.read_parquet(neighbors_path)
+        self._neighbors_df = neighbors_df.set_index("source_game_id").sort_index()
 
     def search(self, query: str, limit: int = 10) -> list[Game]:
         query = query.strip().lower()
@@ -39,21 +35,27 @@ class Recommender:
         return self._games_by_id.get(game_id)
 
     def recommend(self, game_id: int, top_k: int) -> list[Recommendation]:
-        neighbors = self._neighbors.get(game_id, [])[:top_k]
+        try:
+            rows = self._neighbors_df.loc[[game_id]]
+        except KeyError:
+            return []
+
+        rows = rows.sort_values("score", ascending=False).head(top_k)
         results = []
-        for neighbor in neighbors:
-            game = self._games_by_id.get(neighbor["game_id"])
+        for row in rows.itertuples():
+            game = self._games_by_id.get(row.neighbor_game_id)
             if game is None:
                 continue
             results.append(
                 Recommendation(
                     game=game,
-                    score=neighbor["score"],
-                    reasons=neighbor["reasons"],
-                    shared_genres=neighbor.get("shared_genres", []),
+                    score=row.score,
+                    reasons=row.reasons.split("|"),
+                    shared_genres=row.shared_genres.split("|") if row.shared_genres else [],
                 )
             )
         return results
+
 
 
 @lru_cache

@@ -17,8 +17,15 @@ searchBox.addEventListener("input", () => {
 });
 
 async function runSearch(query) {
+  searchResults.innerHTML = `<li class="status">Searching...</li>`;
+
   const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
   const data = await res.json();
+
+  if (data.games.length === 0) {
+    searchResults.innerHTML = `<li class="status">No games found for "${query}".</li>`;
+    return;
+  }
   renderSearchResults(data.games);
 }
 
@@ -36,16 +43,24 @@ async function selectGame(game) {
   searchResults.innerHTML = "";
   searchBox.value = game.name;
 
+  selectedGameTitle.textContent = `Because you like ${game.name}...`;
+  recommendationsGrid.innerHTML = `<p class="status">Loading recommendations...</p>`;
+  recommendationsSection.hidden = false;
+
   const res = await fetch(`/api/games/${game.game_id}/recommendations`);
   const recommendations = await res.json();
 
-  selectedGameTitle.textContent = `Because you like ${game.name}...`;
+  if (recommendations.length === 0) {
+    recommendationsGrid.innerHTML = `<p class="status">No recommendations found for this game yet.</p>`;
+    return;
+  }
+
   recommendationsGrid.innerHTML = "";
   for (const rec of recommendations) {
     recommendationsGrid.appendChild(renderCard(rec));
   }
-  recommendationsSection.hidden = false;
 }
+
 
 function renderCard(rec) {
   const card = document.createElement("div");

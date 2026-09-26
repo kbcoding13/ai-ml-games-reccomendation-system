@@ -9,6 +9,8 @@ tail of niche/indie titles that never got a large player base.
 import json
 from pathlib import Path
 
+import pandas as pd
+
 CONTENT_WEIGHT = 0.6
 COLLAB_WEIGHT = 0.4
 TOP_K = 10
@@ -22,7 +24,7 @@ def main() -> None:
     with open(MODELS_DIR / "collab_neighbors.json") as f:
         collab = json.load(f)
 
-    hybrid = {}
+    rows = []
     for game_id, content_neighbors in content.items():
         collab_neighbors = {n["game_id"]: n["score"] for n in collab.get(game_id, [])}
         content_by_id = {n["game_id"]: n for n in content_neighbors}
@@ -55,13 +57,25 @@ def main() -> None:
                 }
             )
 
+        f
+
         scored.sort(key=lambda x: x["score"], reverse=True)
-        hybrid[game_id] = scored[:TOP_K]
+        for entry in scored[:TOP_K]:
+            rows.append(
+                {
+                    "source_game_id": int(game_id),
+                    "neighbor_game_id": entry["game_id"],
+                    "score": entry["score"],
+                    "reasons": "|".join(entry["reasons"]),
+                    "shared_genres": "|".join(entry["shared_genres"]),
+                }
+            )
 
-    with open(MODELS_DIR / "hybrid_neighbors.json", "w") as f:
-        json.dump(hybrid, f)
+    neighbors_df = pd.DataFrame(rows)
+    neighbors_df.to_parquet(MODELS_DIR / "hybrid_neighbors.parquet", index=False)
 
-    print(f"Saved hybrid_neighbors.json with {len(hybrid)} games")
+    print(f"Saved hybrid_neighbors.parquet with {len(rows)} rows across {neighbors_df['source_game_id'].nunique()} games")
+
 
 
 if __name__ == "__main__":
